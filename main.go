@@ -28,11 +28,17 @@ func main() {
 	}
 	defer window.Destroy()
 
-	render, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
 	if err != nil {
 		fmt.Println("[ERROR] initializing renderer: ", err)
 	}
-	defer render.Destroy()
+	defer renderer.Destroy()
+
+	player, err := newPlayer(renderer)
+	if err != nil {
+		fmt.Println("[ERROR] creating player: ", err)
+		return
+	}
 
 	for {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
@@ -42,9 +48,11 @@ func main() {
 			}
 		}
 
-		render.SetDrawColor(255, 255, 255, 255)
-		render.Clear()
+		renderer.SetDrawColor(255, 255, 255, 255)
+		renderer.Clear()
 
-		render.Present()
+		player.draw(renderer)
+
+		renderer.Present()
 	}
 }
