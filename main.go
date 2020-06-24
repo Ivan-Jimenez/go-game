@@ -52,6 +52,7 @@ func main() {
 		renderer.Clear()
 
 		player.draw(renderer)
+		player.update()
 
 		renderer.Present()
 	}
