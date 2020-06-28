@@ -4,32 +4,18 @@ import (
 	"github.com/veandco/go-sdl2/sdl"
 )
 
-const (
-	enemyHeight = 105
-	enemyWidth  = 105
-)
+const basicEnemySize = 105
 
-type basicEnemy struct {
-	text *sdl.Texture
-	x, y float64
-}
+func newBasicEnemy(renderer *sdl.Renderer, position vector) *element {
+	basicEnemy := &element{}
 
-func newBasicEnemy(r *sdl.Renderer, x, y float64) (be basicEnemy) {
-	be.text = textureFromBMP(r, "sprites/basic_enemy.bmp")
-	be.x = x
-	be.y = y
-	return be
-}
+	basicEnemy.position = position
+	basicEnemy.rotation = 180
 
-func (be *basicEnemy) draw(r *sdl.Renderer) {
-	x := be.x - enemyWidth/2.0
-	y := be.y - enemyHeight/2.0
+	sr := newSpriteRenderer(basicEnemy, renderer, "sprites/basic_enemy.bmp")
+	basicEnemy.addComponent(sr)
 
-	r.CopyEx(
-		be.text,
-		&sdl.Rect{X: 0, Y: 0, W: enemyWidth, H: enemyHeight},
-		&sdl.Rect{X: int32(x), Y: int32(y), W: enemyWidth, H: enemyHeight},
-		180,
-		&sdl.Point{X: enemyWidth / 2, Y: enemyHeight / 2},
-		sdl.FLIP_NONE)
+	basicEnemy.active = true
+
+	return basicEnemy
 }
